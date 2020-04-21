@@ -9,8 +9,10 @@ public class _00_2DArrayDemo {
 		int[][] array2d;
 		
 		// A 2D array can be initialized with constant values like so:
-		int[][] newArray2d = {{1,2,3}, {4, 5, 6}, {7, 8, 9}};
-		
+		int[][] newArray2d = {{1, 2, 3}, 
+						/*is*/ {4, 5, 6}, 
+							  {7, 8, 9}};
+								//js
 		// If the value of the arrays is not known at the time the array
 		// is created, you can define the size of the array like this:
 		int[][] anotherArray2d = new int[5][5];
