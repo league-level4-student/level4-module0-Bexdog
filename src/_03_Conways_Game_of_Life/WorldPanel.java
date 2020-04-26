@@ -31,13 +31,13 @@ Cell[][] cell;
 		//2. Calculate the cell size.
 		cellSize = w/cellsPerRow;
 		//3. Initialize the cell array to the appropriate size.
-		cell = new Cell[w][h];
+		cell = new Cell[cellsPerRow][cellsPerRow];
 		//3. Iterate through the array and initialize each cell.
 		//   Don't forget to consider the cell's dimensions when 
 		//   passing in the location.
 		for(int i = 0; i<cell.length;i++) {
 			for(int j = 0; j<cell[0].length;j++) {
-				cell[i][j]= new Cell(i,j,cellSize);
+				cell[j][i]= new Cell(i,j,cellSize);
 			}
 		}
 	}
@@ -45,9 +45,16 @@ Cell[][] cell;
 	public void randomizeCells() {
 		//4. Iterate through each cell and randomly set each
 		//   cell's isAlive memeber to true of false
-		for(int i = 0; i<cell.length;i++) {
-			for(int j = 0; j<cell[0].length;j++) {
-				cell[i][j].isAlive=true;
+		int randy = new Random().nextInt(5);
+		for(int i = 0; i<cellsPerRow;i++) {
+			for(int j = 0; j<cellsPerRow;j++) {
+				if(randy==0) {
+				cell[j][i].isAlive=true;
+				}
+				else {
+					cell[j][i].isAlive=false;	
+				}
+				randy = new Random().nextInt(5);
 			}
 		}
 		repaint();
@@ -57,7 +64,7 @@ Cell[][] cell;
 		//5. Iterate through the cells and set them all to dead.
 		for(int i = 0; i<cell.length;i++) {
 			for(int j = 0; j<cell[0].length;j++) {
-				cell[i][j].isAlive=false;
+				cell[j][i].isAlive=false;
 			}
 		}
 		repaint();
@@ -80,7 +87,7 @@ Cell[][] cell;
 		//6. Iterate through the cells and draw them all
 		for(int i = 0; i<cell.length;i++) {
 			for(int j = 0; j<cell[0].length;j++) {
-				cell[i][j].draw(g);
+				cell[j][i].draw(g);
 			}
 		}
 		
@@ -95,15 +102,18 @@ Cell[][] cell;
 		//7. iterate through cells and fill in the livingNeighbors array
 		// . using the getLivingNeighbors method.
 		int[][] livingNeighbors = new int[cellsPerRow][cellsPerRow];
-		for(int i = 0; i<cell.length;i++) {
-			for(int j = 0; j<cell[0].length;j++) {
-				livingNeighbors[i][j] = getLivingNeighbors(i,j);
-				cell[i][j].liveOrDie(livingNeighbors[i][j]);
+		for(int i = 0; i<cellsPerRow;i++) {
+			for(int j = 0; j<cellsPerRow;j++) {
+				livingNeighbors[j][i] = getLivingNeighbors(j,i);			
 			}
 		}
 		//8. check if each cell should live or die
-		
-		
+		for(int i = 0; i<cellsPerRow;i++) {
+			for(int j = 0; j<cellsPerRow;j++) {
+				cell[j][i].liveOrDie(livingNeighbors[j][i]);
+				
+			}
+		}
 		repaint();
 	}
 	
@@ -112,8 +122,33 @@ Cell[][] cell;
 	//   living neighbors there are of the 
 	//   cell identified by x and y
 	public int getLivingNeighbors(int x, int y){
-		
-		return 0;
+		//System.out.println(x+", "+y);
+		int neighbors = 0;
+		if((x!=cellsPerRow-1)&&cell[x+1][y].isAlive) {
+			neighbors++;	
+		}
+		if((y!=cellsPerRow-1)&&(x!=cellsPerRow-1)&&cell[x+1][y+1].isAlive) {
+			neighbors++;	
+		}
+		if((y!=cellsPerRow-1)&&cell[x][y+1].isAlive) {
+			neighbors++;	
+		}
+		if((x>0)&&(y!=cellsPerRow-1)&&cell[x-1][y+1].isAlive) {
+			neighbors++;	
+		}
+		if((y>0)&&cell[x][y-1].isAlive) {
+			neighbors++;	
+		}
+		if((x!=cellsPerRow-1)&&(y>0)&&cell[x+1][y-1].isAlive) {
+			neighbors++;	
+		}
+		if((x>0)&&cell[x-1][y].isAlive) {
+			neighbors++;	
+		}
+		if((x>0)&&(y>0)&&cell[x-1][y-1].isAlive) {
+			neighbors++;	
+		}		
+		return neighbors;
 	}
 
 	@Override
@@ -138,11 +173,12 @@ Cell[][] cell;
 		//10. Use e.getX() and e.getY() to determine
 		//    which cell is clicked. Then toggle
 		//    the isAlive variable for that cell.
-		if(cell[e.getX()][e.getY()].isAlive)
-		
-		
-		
-		
+		if(cell[e.getY()/cellSize][e.getX()/cellSize].isAlive) {
+			cell[e.getY()/cellSize][e.getX()/cellSize].isAlive=false;
+		}
+		else if(cell[e.getY()/cellSize][e.getX()/cellSize].isAlive==false) {
+			cell[e.getY()/cellSize][e.getX()/cellSize].isAlive = true;
+		}
 		repaint();
 	}
 
