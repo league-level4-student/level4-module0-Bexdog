@@ -46,7 +46,39 @@ public class TheWrongWayCow {
     public static int[] findWrongWayCow(final char[][] field) {
         // Fill in the code to return the x,y coordinate position of the
         // head (letter 'c') of the wrong way cow!
-        
+    	String direction = "";
+        for(int i = 0; i<field.length;i++) {
+        	for(int j = 0; j<field[0].length;j++) {
+        		if(j<field.length&&field[j][i] == 'c'&&field[j+1][i] == 'o'&&field[j+2][i] == 'w') {
+        			direction = "right";
+        		}
+        		if(j>0&&field[j][i] == 'c'&&field[j-1][i] == 'o'&&field[j-2][i] == 'w') {
+        			direction = "left";
+        		}
+        		if(i<field[0].length&&field[j][i] == 'c'&&field[j][i+1] == 'o'&&field[j][i+2] == 'w') {
+        			direction = "up";
+        		}
+        		if(i>0&&field[j][i] == 'c'&&field[j][i-1] == 'o'&&field[j][i-2] == 'w') {
+        			direction = "down";
+        		}
+        		if(field[j][i] == 'c'&&field[j+1][i] == 'o'&&field[j+2][i] == 'w'&&(direction.equals("left")||direction.equals("up")||direction.equals("down"))) {
+        			int[] end = {j, i};
+        			return end;
+        		}
+        		if(field[j][i] == 'c'&&field[j-1][i] == 'o'&&field[j-2][i] == 'w'&&(direction.equals("right")||direction.equals("up")||direction.equals("down"))) {
+        			int[] end = {j, i};
+        			return end;
+        		}
+        		if(field[j][i] == 'c'&&field[j][i+1] == 'o'&&field[j][i+2] == 'w'&&(direction.equals("left")||direction.equals("right")||direction.equals("down"))) {
+        			int[] end = {j, i};
+        			return end;
+        		}
+        		if(field[j][i] == 'c'&&field[j][i-1] == 'o'&&field[j][i-1] == 'w'&&(direction.equals("left")||direction.equals("up")||direction.equals("right"))) {
+        			int[] end = {j, i};
+        			return end;
+        		}
+        	}
+        }
         return null;
     }
 }
